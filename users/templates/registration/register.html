@@ -1,0 +1,19 @@
+{% extends "blog/layout.html" %}
+{% block title %}
+Registration
+{% endblock %}
+
+{% block body %}
+<div class="ui huge padded raised container segment">
+    <h1>Register</h1>
+
+    <form method="POST" class="ui form">
+        {% csrf_token %}
+        {{form.as_p}}
+        <button class="ui tiny secondary button">Register</button>
+    </form>
+
+
+</div>
+
+{% endblock %}

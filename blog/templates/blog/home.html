@@ -1,0 +1,36 @@
+{% extends "blog/layout.html" %}
+{% block title %}
+Welcome to the Blog!
+{% endblock %}
+
+{% block body %}
+
+<div class="ui centered link cards">
+    {% for post in object_list %}
+    <div class="ui blue card">
+        <div class="ui image">
+            <img src="{{ post.image.url|default_if_none:'media/no-image-icon.jpg' }}">
+        </div>
+        <div class="content">
+            <a class="header" href="{% url 'article' post.id %}">{{ post.title }}</a>
+            <div class="meta">
+                <span class="date">{{ post.created }}</span>
+            </div>
+            <div class="description">
+                {{ post.snippet|safe }}
+            </div>
+        </div>
+        <div class="ui blue bottom right attached label">
+            <a href="{% url 'category' post.category|slugify %}">{{ post.category }}</a>
+        </div>
+        <div class="extra content">
+            <i class="user icon"></i>
+            {{ post.author.first_name }} {{ post.author.last_name }}
+        </div>
+    </div>
+
+    {% endfor %}
+
+</div>
+<!-- </div> -->
+{% endblock %}

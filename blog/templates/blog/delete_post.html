@@ -1,0 +1,35 @@
+{% extends "blog/layout.html" %}
+{% block title %}
+Delete section
+{% endblock %}
+
+{% block body %}
+<div class="ui huge padded raised container segment">
+    {% if user.is_superuser %}
+    <div class="ui negative message">
+        <div class="header">
+            <h1>Delete "{{ post.title }}"?</h1>
+        </div>
+        <p>
+        <h4>This actions is irreversible.</h4>
+        </p>
+    </div>
+
+
+    <form method="POST" class="ui form">
+        {% csrf_token %}
+        <button class="ui tiny negative button">Delete post</button>
+    </form>
+    {% else %}
+    <div class="ui warning message">
+        <div class="ui header">
+            You are not logged in!
+        </div>
+        <p>Do you want to <a href="{% url 'login' %}">Log-in?</a></p>
+        <p>Don't have an account? <a href="{% url 'register' %}">Sign up</a></p>
+    </div>
+    {% endif %}
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends "blog/layout.html" %}
+{% load static %}
+{% block title %}
+Welcome to the Blog!
+{% endblock %}
+
+{% block body %}
+
+<div class="ui center aligned huge segment">
+    <div class="ui items">
+        <div class="item">
+            {% if page_user.pic %}
+            <div class="ui large image">
+                <img src="{{ page_user.pic.url }}">
+            </div>
+            {% else %}
+            <div class="ui small image">
+                <img src="{% static 'ProyectoBlog/images/default-profile-pic.png' %}">
+            </div>
+            {% endif %}
+            <div class="content">
+                <div class="header">{{ page_user.user.first_name }} {{ page_user.user.last_name }}</div>
+                <div class="meta">
+                    <span>About</span>
+                </div>
+                <div class="description">
+                    <p>{{ page_user.bio }}</p>
+                </div>
+                <div class="extra">
+                    {% if page_user.fb_url %}
+                    <a href="{{ page_user.fb_url }}">
+                        <i class="big facebook icon"></i>
+                    </a>
+                    {% endif %}
+                    {% if page_user.tw_url %}
+                    <a href="{{ page_user.tw_url }}">
+                        <i class="big twitter icon"></i>
+                    </a>
+                    {% endif %}
+                    {% if page_user.ig_url %}
+                    <a href="{{ page_user.ig_url }}">
+                        <i class="big instagram icon"></i>
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,11 @@
+body {
+    min-height: 100vh;
+}
+footer {
+    position: sticky;
+    top: 100%;
+    background-color: whitesmoke;
+    padding-top: 1.5rem;
+    padding-bottom: 2rem;
+    margin-top: 2rem;
+}

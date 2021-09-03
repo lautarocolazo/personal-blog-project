@@ -1,0 +1,158 @@
+{% extends "blog/layout.html" %}
+{% load static %}
+
+{% block title %}
+{{ post.title }}
+{% endblock %}
+
+{% block body %}
+<div class="ui clearing raised container segment">
+    <div class="ui padded segment">
+        <h1>{{ post.title }}</h1>
+        <h4>{{ post.created }}</h4>
+        <div class="ui divider"></div>
+        <h3>{{ post.body|safe }}</h3>
+        <div class="ui divider"></div>
+    </div>
+    <!-- <div class="ui card">
+        <div class="content">
+            <div class="header">{{ post.author.first_name }} {{ post.author.last_name }}</div>
+            <div class="meta">
+                <span class="category">Author</span>
+            </div>
+            <div class="description">
+                <p>{{ post.author.profile.bio }}</p>
+            </div>
+        </div>
+        <div class="extra content">
+            <div class="right floated author">
+                <img class="ui avatar image" src="{{ post.author.profile.image.url }}"> {{ post.author.username }}
+            </div>
+        </div>
+    </div> -->
+    <!-- <div class="ui items">
+        <div class="item">
+            <a class="ui tiny image">
+                <img src="{{ post.author.profile.image.url }}">
+            </a>
+            <div class="content">
+                <a class="header">{{ post.author.first_name }} {{ post.author.last_name }}</a>
+                <div class="description">
+                    <p>{{ post.author.profile.bio }}</p>
+                </div>
+            </div>
+            <div class="extra">
+                <i class="heart icon"></i>
+            </div>
+        </div>
+    </div> -->
+    <div class="ui items">
+        <div class="item">
+            {% if post.author.profile.pic %}
+            <div class="ui small image">
+                <img src="{{ post.author.profile.pic.url }}">
+            </div>
+            {% else %}
+            <div class="ui small image">
+                <img src="{% static 'ProyectoBlog/images/default-profile-pic.png' %}">
+            </div>
+            {% endif %}
+            <div class="content">
+                <a class="header">{{ post.author.first_name }} {{ post.author.last_name }}</a>
+                <div class="meta">
+                    <span>About</span>
+                </div>
+                <div class="description">
+                    <p>{{ post.author.profile.bio }}</p>
+                </div>
+                <div class="extra">
+                    <a href="{% url 'user_profile' post.author.profile.id %}">
+                        <i class="big id card icon"></i>
+                    </a>
+                    <a href="{{ post.author.profile.fb_url }}">
+                        <i class="big facebook icon"></i>
+                    </a>
+                    <a href="{{ post.author.profile.tw_url }}">
+                        <i class="big twitter icon"></i>
+                    </a>
+                    <a href="{{ post.author.profile.ig_url }}">
+                        <i class="big instagram icon"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% if user.is_superuser %}
+    <br>
+    <form action="{% url 'like_post' post.id %}" method="POST">
+        {% csrf_token %}
+        {% if user.is_authenticated %}
+        {% if liked %}
+        <button type="submit" name="post_id" value="{{ post.id }}" class="ui icon red small button ">
+            <i class="heart icon"></i> {{ total_likes }}
+        </button>
+        {% else %}
+        <button type="submit" name="post_id" value="{{ post.id }}" class="ui icon small button ">
+            <i class="heart icon"></i> {{ total_likes }}
+        </button>
+        {% endif %}
+        {% else %}
+        <a href="{% url 'login' %}">Login</a> to like
+        {% endif %}
+    </form>
+    <br>
+    <a href="{% url 'home' %}" class="ui tiny primary button">Back</a>
+    <a href="{% url 'delete_post' post.id %}" class="ui right floated negative tiny button">Delete
+        <a href="{% url 'update_post' post.id %}" class="ui right floated tiny button">Edit post</a>
+        {% else %}
+        <br>
+
+        <form action="{% url 'like_post' post.id %}" method="POST">
+            {% csrf_token %}
+            {% if user.is_authenticated %}
+            {% if liked %}
+            <button type="submit" name="post_id" value="{{ post.id }}" class="ui icon red small button ">
+                <i class="heart icon"></i> {{ total_likes }}
+            </button>
+            {% else %}
+            <button type="submit" name="post_id" value="{{ post.id }}" class="ui icon small button ">
+                <i class="heart icon"></i> {{ total_likes }}
+            </button>
+            {% endif %}
+            {% else %}
+            <a href="{% url 'login' %}">Login</a> to like
+            {% endif %}
+        </form>
+
+        <br>
+        <a href="{% url 'home' %}" class="ui tiny primary button">Back</a>
+        {% endif %}
+        <div class="ui padded segment">
+            <h2>Comments section</h2>
+            {% if not post.comments.all %}
+            <div class="ui warning message">
+                <div class="ui header">
+                    No comments yet...
+                </div>
+                <a href="{% url 'add_comment' post.pk %}">
+                    <p>Soyez le premier!</p>
+                </a>
+            </div>
+            {% else %}
+            <a href="{% url 'add_comment' post.pk %}">Add a comment</a>
+            <br>
+            <br>
+            {% for comment in post.comments.all %}
+            <strong>
+                {{ comment.name }} -
+                {{ comment.created }}
+            </strong>
+            <!-- <div class="ui divider"></div> -->
+            <br>
+            {{ comment.body }}
+            {% endfor %}
+            <div class="ui divider"></div>
+            {% endif %}
+        </div>
+</div>
+{% endblock %}

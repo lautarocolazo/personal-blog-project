@@ -1,0 +1,35 @@
+{% extends "blog/layout.html" %}
+
+{% block title %}
+{{ cats }} Category!
+{% endblock %}
+{% block body %}
+{% if category_post %}
+<div class="ui very padded container segment">
+    <ul>
+        {% for post in category_post %}
+
+        <li>
+            <a href="{% url 'article' post.id %}">
+                {{ post.title }}</a> - {{ post.author.first_name }} {{ post.author.last_name }}
+            <br>
+            {{ post.snippet|safe }}
+
+        </li>
+        <br>
+        <div class="ui divider"></div>
+        {% endfor %}
+    </ul>
+
+</div>
+
+{% else %}
+<div class="ui huge padded container segment">
+    <div class="ui info message">
+        <div class="header">
+            <h1>Sorry! "{{cats}}" category doesn't exist!</h1>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
